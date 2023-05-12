@@ -9,7 +9,7 @@ from datetime import date
 spotifyHost = "https://api.spotify.com"
 userId = sys.argv[1]
 token = sys.argv[2]
-file = f"spotify-playlists-{date.today()}.csv"
+file = f"spotify-playlists-{date.today()}.txt"
 
 # functions
 def sendRequest(url) :
