@@ -1,5 +1,5 @@
 # spotify-playlists-exporter
-Allow user to export spotify playlists to CSV file format.
+Allow user to export spotify playlists to text file format.
 
 ## Dependencies
 * Python 2.7+
