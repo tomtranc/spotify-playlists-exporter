@@ -3,9 +3,11 @@ Allow user to export spotify playlists to text file format.
 
 ## Dependencies
 * Python 2.7+
+* pip requests 2.x+
 
 ## How to use
 `python spotify-fetch-playlists.py <spotifyUserId> <spotify-bearer-token>`
+* `spotify-bearer-token` can be obtain by inspecting Spotify network POST/GET request's Header called `authorization`
 
 Example:
 ```bash
