@@ -1,6 +1,5 @@
 # Spotify Fetch all playlist
 import sys
-import json
 import requests
 from requests.exceptions import HTTPError
 from datetime import date
@@ -9,7 +8,8 @@ from datetime import date
 spotifyHost = "https://api.spotify.com"
 userId = sys.argv[1]
 token = sys.argv[2]
-file = f"spotify-playlists-{date.today()}.txt"
+targetDir = sys.argv[3] if not None else 'D:\OneDrive\My Music'
+targetFile = f"{targetDir}\spotify-playlists-{date.today()}.txt"
 
 # functions
 def sendRequest(url) :
@@ -39,7 +39,7 @@ def getArtist(song) :
 def writeCsvFile(song) :
     artist = str(getArtist(song))
     print("Writing: " + song['track']['name'] + "\tartists: " + artist)
-    f = open(file, "a", encoding = "utf-8")
+    f = open(targetFile, "a", encoding = "utf-8")
     f.write(f"{playlistName} | {playlistId} | {artist} | {song['track']['name']} | {song['track']['album']['name']}\n")
     f.close()
 
@@ -67,7 +67,7 @@ if __name__ == "__main__" :
     jsonResponse = getPlaylists(50, 0)
 
     # init file with headers
-    f = open(file, "w", encoding = "utf-8")
+    f = open(targetFile, "w", encoding = "utf-8")
     f.write(f"Playlist | PlaylistId | Artists | Song Title | Album\n")
     f.close()
 
@@ -84,8 +84,22 @@ if __name__ == "__main__" :
             totalSongsByOwner += playlist['tracks']['total']
             totalSongsExported += fetchSongsFromPlaylistId(tracks)
 
-    print(f"Total Songs By all: " + str(totalSongsAll))
-    print(f"Total Songs Saved By Onwer: " + str(totalSongsByOwner))
-    print(f"Total Songs Exported: " + str(totalSongsExported))
+    
+    summaryTotalSongsByAll = "\n\n\nTotal Songs By all: " + str(totalSongsAll)
+    summaryTotalSongsSavedByOwner = "\nTotal Songs Saved By Owner: " + str(totalSongsByOwner)
+    summaryTotalSongsExported = "\nTotal Songs Exported: " + str(totalSongsExported)
+
+    # write summary report to file
+    f = open(targetFile, "a", encoding = "utf-8")
+    f.write(summaryTotalSongsByAll)
+    f.write(summaryTotalSongsSavedByOwner)
+    f.write(summaryTotalSongsExported)
+    f.close()
+
+    # print summary report
+    print(summaryTotalSongsByAll)
+    print(summaryTotalSongsSavedByOwner)
+    print(summaryTotalSongsExported)
+    print("Playlist file location: " + targetFile)
     if totalSongsByOwner != totalSongsExported :
         print(f"Number of songs exported {totalSongsExported} did not match with number of songs in Spotify {totalSongsByOwner}!! Verify again")
